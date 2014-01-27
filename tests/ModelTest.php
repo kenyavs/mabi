@@ -50,8 +50,7 @@ class ModelTest extends SampleAppTestCase {
     $this->assertNotEmpty($amodel->partner->name);
   }
 
-  
-  public function testFindByIdBackbone() {
+  public function testFindByIdBackboneDate() {
     $result = array('id' => 1,
       'lastAccessed' => array('date' => '2013-10-23 08:12:14', 'timezone_type' => 1, 'timezone' => '+00:00'));//'{"role":null,"gender":null,"birthday":null,"ageRange":null,"eatingPreference":null,"couponBook":["52e185569be93f43beb7acdf","52deec0b9be93f9411b7acda","52e185569be93f43beb7acdf","52e185569be93f43beb7acdf"],"facebookId":null,"userId":"515af47bf607284f6bdfd950","created":null,"lastAccessed":{"date":"2013-10-23 08:12:14","timezone_type":1,"timezone":"+00:00"},"firstName":null,"lastName":null,"email":"test@prolificinteractive.com","password":null,"newSessionId":null}';
     $this->dataConnectionMock->expects($this->once())
@@ -60,7 +59,7 @@ class ModelTest extends SampleAppTestCase {
       ->will($this->returnValue($result));
 
     /**
-     * @var $amodel \mabiTesting\ModelA
+     * @var $cmodel \mabiTesting\ModelC
      */
     $cmodel = \mabiTesting\ModelC::init($this->app);
     $cmodel->findById(1);
