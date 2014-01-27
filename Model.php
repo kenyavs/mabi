@@ -321,8 +321,8 @@ class Model {
         else {
           $property = $resultArray[$rProperty->getName()];
 
-          //Backbone sends date formatted as an object i.e. {"date":"2014-01-22 21:56:30","timezone_type":1,"timezone":"+00:00"}, get expects third argument to be a timestamp
-          if(is_array($property) && !empty($property['date'])){
+          //Backbone sends date formatted as a JSON object i.e. {"date":"2014-01-22 21:56:30","timezone_type":1,"timezone":"+00:00"}, get expects third argument to be a timestamp
+          if(!empty($property['date'])){
             $property = strtotime($property['date']);
           }
 
