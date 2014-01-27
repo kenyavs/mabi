@@ -266,6 +266,7 @@ class Model {
   protected function load($resultArray, $sanitizeArray = FALSE) {
     if (!is_array($resultArray)) {
       $resultArray = json_decode($resultArray, TRUE);
+
       if (!is_array($resultArray)) {
         throw new InvalidJSONException("Invalid JSON used to load a model");
       }
@@ -318,7 +319,14 @@ class Model {
           $this->{$rProperty->getName()} = $outArr;
         }
         else {
-          $this->loadField($type, $this->{$rProperty->getName()}, $resultArray[$rProperty->getName()]);
+          $property = $resultArray[$rProperty->getName()];
+
+          //Backbone sends date formatted as an object i.e. {"date":"2014-01-22 21:56:30","timezone_type":1,"timezone":"+00:00"}, get expects third argument to be a timestamp
+          if(is_array($property) && !empty($property['date'])){
+            $property = strtotime($property['date']);
+          }
+
+          $this->loadField($type, $this->{$rProperty->getName()}, $property);
         }
       }
       unset($resultArray[$rProperty->getName()]);
@@ -359,6 +367,7 @@ class Model {
       $value = $dataConnection->convertToNativeId($value);
     }
     $result = $dataConnection->findOneByField($fieldName, $value, $this->table, $this->readFields);
+
     if ($result == NULL) {
       return FALSE;
     }
